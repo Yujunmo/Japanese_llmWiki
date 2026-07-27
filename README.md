@@ -18,7 +18,7 @@ wiki/
 MOC/
   주제별/       주제로 묶은 Map of Content (의류, 감정 …)
   품사별/       품사로 묶은 Map of Content (명사, 동사 …)
-train/          복습·테스트 산출물 (review.md=오전 복습, train.md=저녁 테스트)
+train/          복습·테스트 산출물 (review.md=오전 복습, test.md=저녁 테스트 퀴즈)
 templates/      페이지 템플릿
 .claude/skills/ LLM 운영 스킬 (ingest, review)
 index.md        위키 전체 카탈로그
@@ -45,8 +45,8 @@ CLAUDE.md       스키마 & 운영 규칙 (정본)
 하루 단위 복습 루틴:
 
 - **오전**: **`/review`** 실행 → `wiki/voca`의 `last_seen`(마지막 복습일)을 읽어 가장 오래되거나 미복습인 단어 **10개를 랜덤 추출**해 `train/review.md`에 담는다. 이 파일로 복습한다.
-- **저녁**: `train/train.md`(전일 오전에 복습했던 10개)로 테스트한다.
-- `/review`를 실행하면 직전 `review.md`가 `train.md`로 이월되면서 세대가 한 칸씩 밀린다. **review 스킬은 wiki를 읽기만 한다.**
+- **저녁**: `train/test.md`(전일 오전에 복습했던 10개를 퀴즈로 만든 것)로 테스트한다. 문제 3유형(한자→읽기+뜻 · 뜻→단어 · 요미가나→한자)에 답을 접기 콜아웃으로 숨겨, 혼자 풀고 펼쳐 채점한다.
+- `/review`를 실행하면 직전 `review.md`의 10단어가 `test.md` 퀴즈로 렌더되면서 세대가 한 칸씩 밀린다(예전 `train.md` 중간 단계는 폐지). **review 스킬은 wiki를 읽기만 한다.**
 
 각 단어·관용어 페이지 **맨 아래에는 복습완료 버튼**이 있다. 페이지를 열어 복습한 뒤 누르면 `last_seen`이 오늘 날짜로, `복습횟수`가 +1로 갱신된다.
 
