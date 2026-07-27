@@ -19,7 +19,7 @@ wiki/
 MOC/
   주제별/               # 주제별 Map of Content
   품사별/               # 품사별 Map of Content
-train/                  # 복습·테스트 산출물 (review.md=오전 복습, train.md=저녁 테스트)
+train/                  # 복습·테스트 산출물 (review.md=오전 복습, test.md=저녁 테스트 퀴즈)
 templates/              # 페이지 템플릿
 .claude/skills/         # LLM 운영 스킬 (ingest, review)
 index.md                # 위키 전체 카탈로그 (콘텐츠 지향)
@@ -61,6 +61,7 @@ CLAUDE.md               # 이 파일 (스키마)
 - **관리자가 직접 넣은 예문은 인제스트 시 위키 페이지 예문에 반드시 포함한다** (아래 인제스트 규칙 참조).
 - 인제스트 시: `## vocabulary` 항목은 `wiki/voca/`로, `## expression` 항목은 `wiki/expression/`로 보낸다.
 - 인제스트가 끝나면 LLM이 `ingested: true`로 바꾼다.
+- **강제 장치 (PreToolUse 훅).** raw 불변 원칙은 문서 약속에 그치지 않고 훅으로 강제된다. `.claude/settings.json`에 등록된 `PreToolUse` 훅이 `.claude/hooks/protect-raw.py`를 실행해, `raw/` 아래 파일을 수정하는 도구 호출(Edit·Write·MultiEdit·NotebookEdit)을 **차단**한다. **유일한 예외**는 인제스트 마지막 단계의 `ingested: false → true` 한 줄 Edit(플래그 플립)뿐이며, 그 외 본문 편집·새 raw 파일 생성은 모두 거부된다. 관리자는 훅과 무관하게 직접 raw를 작성·수정할 수 있다(훅은 도구 호출에만 걸린다).
 
 ---
 
@@ -164,9 +165,10 @@ tags: [요루시카]    # 출처 태그. raw에 출처가 있을 때만 기재, 
 ### 4. Review (복습)
 관리자가 `/review`를 발동하면 (스킬: `.claude/skills/review/SKILL.md`) 하루 단위 복습 루틴을 굴린다.
 - **오전 루틴**: `train/review.md`(그날 뽑힌 단어 10개)로 복습.
-- **저녁 루틴**: `train/train.md`(전일 오전에 복습했던 10개)로 테스트.
-- 발동 시 동작: ① 기존 `train/review.md`를 그대로 `train/train.md`로 이월(덮어쓰기, 최초 실행이면 스킵) → ② `wiki/voca`의 `last_seen`을 읽어 가장 오래되거나 공백(미복습)인 단어 풀에서 10개를 랜덤 추출해 `train/review.md`를 MOC 스타일 `[[링크]]` 목록으로 갱신.
-- **읽기 전용 원칙**: 이 스킬은 wiki 파일을 절대 수정하지 않는다. `last_seen`은 읽기만 하며, 쓰는 파일은 `train/review.md`·`train/train.md` 둘뿐이다. `last_seen` 갱신은 복습 완료 시 별도로 처리한다(아래 복습완료 버튼).
+- **저녁 루틴**: `train/test.md`(직전 세대의 복습 10개를 퀴즈로 렌더한 것)로 테스트.
+- 발동 시 동작: ① 기존 `train/review.md`의 10단어를 각 단어 wiki 페이지의 뜻·요미가나·한자를 읽어 `train/test.md` 퀴즈로 렌더(덮어쓰기, 최초 실행이면 스킵) → ② `wiki/voca`의 `last_seen`을 읽어 가장 오래되거나 공백(미복습)인 단어 풀에서 10개를 랜덤 추출해 `train/review.md`를 MOC 스타일 `[[링크]]` 목록으로 갱신. (`train.md` 중간 단계는 폐지 — review.md가 바로 test.md 퀴즈로 렌더된다.)
+- **테스트 퀴즈 형식**: 세 유형(① 한자→읽기+뜻 · ② 뜻→단어 · ③ 요미가나→한자)을 10문항에 고르게 섞어 배정하고, 정답은 Obsidian 접기 콜아웃 `> [!success]- 정답`으로 숨긴다. 한자 표기가 없는(가나 표제어) 단어에는 ③을 배정하지 않는다. 문제문에는 `[[링크]]`를 넣지 않는다(정답 한자가 노출되므로).
+- **읽기 전용 원칙**: 이 스킬은 wiki 파일을 절대 수정하지 않는다. `뜻`·`요미가나`·`last_seen`을 읽기만 하며, 쓰는 파일은 `train/review.md`·`train/test.md` 둘뿐이다. `last_seen` 갱신은 복습 완료 시 별도로 처리한다(아래 복습완료 버튼).
 
 **복습완료 버튼 (`last_seen`·`복습횟수` 수동 갱신).** 모든 voca·expression 페이지는 **가장 하단(맨 끝)** 에 Meta Bind 버튼 블록을 갖는다. 관리자가 페이지를 열어 복습한 뒤 이 버튼을 누르면 **① `last_seen`이 오늘 날짜로 갱신**되고 **② `복습횟수`가 +1** 된다. 버튼 아래 표시줄에 `VIEW[{last_seen}]`·`VIEW[{복습횟수}]`로 현재 값이 보인다. 이 버튼 블록은 `templates/voca.md`·`templates/expression.md`에 포함돼 있으므로 인제스트로 만드는 새 페이지에도 자동으로 들어간다 — **블록을 임의로 제거하지 않는다.** 블록 형식:
 ```meta-bind-button
@@ -204,6 +206,6 @@ actions:
 - ⚠️ 단, **동의어/반의어/관련어는 이미 wiki에 있는 페이지에만** 링크한다. 없는 단어로 빈 링크를 만들지 않는다.
 - ✅ 페이지를 만들면 index·MOC·log를 반드시 갱신한다.
 - ✅ 복습 상태(`last_seen`·`복습횟수`)는 사용자가 페이지 하단 복습완료 버튼으로만 갱신한다. LLM·스킬은 이 두 필드에 쓰지 않는다.
-- ❌ raw/ 파일의 학습 내용을 수정하지 않는다 (ingested 플래그만 변경).
+- ❌ raw/ 파일의 학습 내용을 수정하지 않는다 (ingested 플래그만 변경). **PreToolUse 훅(`.claude/hooks/protect-raw.py`)이 이를 강제** — 플래그 플립 외의 raw/ 수정은 도구 단에서 차단된다.
 - ❌ 페이지 하단의 Meta Bind 복습완료 버튼 블록을 제거·변형하지 않는다.
 - ❌ 확실하지 않은 요미가나·뜻은 추측하지 말고 미상으로 표기하거나 확인한다.
