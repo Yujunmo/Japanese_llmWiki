@@ -1,3 +1,4 @@
+<img width="3440" height="1440" alt="Screenshot 2026-08-01 at 10 32 13 PM" src="https://github.com/user-attachments/assets/cec9a768-2173-4bf9-84aa-a22e57380fc9" />
 # 일본어 LLM 위키
 
 일상에서 발견한 일본어 **단어·관용어**를 구조화하고 상호연결해, 시간이 지날수록 풍부해지는 개인 학습 지식베이스로 축적하는 Obsidian 볼트다.
