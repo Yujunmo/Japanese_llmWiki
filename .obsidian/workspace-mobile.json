@@ -11,10 +11,14 @@
             "id": "b2a07519c7beb7fc",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "그래프 뷰"
+              "type": "markdown",
+              "state": {
+                "file": "wiki/voca/ますます.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ますます"
             }
           }
         ]
@@ -33,7 +37,9 @@
           "type": "file-explorer",
           "state": {
             "sortOrder": "alphabetical",
-            "autoReveal": false
+            "autoReveal": false,
+            "showSearch": false,
+            "searchQuery": ""
           },
           "icon": "lucide-folder-closed",
           "title": "파일 탐색기"
@@ -108,7 +114,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "raw/2026-07-27.md",
+            "file": "wiki/voca/ますます.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -165,32 +171,33 @@
   },
   "active": "b2a07519c7beb7fc",
   "lastOpenFiles": [
-    "wiki/voca/文房具屋.md",
+    "log.md",
+    "wiki/voca/結び.md",
+    "wiki/voca/申し上げる.md",
+    "wiki/voca/手早く.md",
+    "wiki/voca/種類.md",
+    "wiki/voca/高揚.md",
     "train/review.md",
-    "wiki/voca/拝啓.md",
-    "wiki/voca/歌う.md",
-    "wiki/voca/袖.md",
-    "wiki/voca/口ずさむ.md",
-    "CLAUDE.md",
-    "templates/raw.md",
-    "raw/2026-07-27.md",
-    "wiki/voca/手紙.md",
-    "wiki/voca/敬具.md",
-    "templates/voca.md",
-    "templates/expression.md",
-    "wiki/voca/衣服.md",
-    "wiki/voca/転がる.md",
-    "raw/2026-07-26_1.md",
-    "wiki/voca/店.md",
+    "wiki/voca/引き分け.md",
+    "wiki/voca/ますます.md",
+    "wiki/voca/ご清栄.md",
+    "wiki/voca/処理.md",
+    "wiki/voca/尋ねる.md",
+    "wiki/voca/つまづく.md",
+    "wiki/voca/対照.md",
+    "wiki/voca/比較.md",
+    "wiki/voca/夜空.md",
+    "wiki/voca/品揃え.md",
     "README.md",
-    "wiki/voca/動作.md",
-    "wiki/voca/豊富.md",
-    "wiki/voca/封筒.md",
-    "wiki/voca/整理.md",
-    "wiki/voca/文房具.md",
-    "wiki/voca/状態.md",
+    "wiki/voca/手続き.md",
+    "raw/2026-07-28.md",
+    "CLAUDE.md",
+    "wiki/voca/捲る.md",
+    "wiki/voca/紙.md",
     "wiki/voca/収納.md",
-    "train",
-    "MOC/품사별/な형용사.md"
+    "wiki/voca/拝啓.md",
+    "train/test.md",
+    "Untitled.base",
+    "train"
   ]
 }
