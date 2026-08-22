@@ -10,7 +10,7 @@
           {
             "id": "21c5d64f0ad1227a",
             "type": "tabs",
-            "dimension": 49.150485436893206,
+            "dimension": 55.71284125379171,
             "children": [
               {
                 "id": "da35831a4c2bd329",
@@ -31,7 +31,7 @@
           {
             "id": "d2f716a1a91eac5d",
             "type": "tabs",
-            "dimension": 50.8495145631068,
+            "dimension": 44.28715874620829,
             "children": [
               {
                 "id": "0b2e2f87aa34c888",
@@ -75,7 +75,7 @@
                   },
                   "pinned": true,
                   "icon": "terminal",
-                  "title": "⠂ wiki-reorganize-memory-understanding"
+                  "title": "✳ wiki-reorganize-memory-understanding"
                 }
               },
               {
