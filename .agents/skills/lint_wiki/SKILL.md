@@ -1,6 +1,6 @@
 ---
 name: lint_wiki
-description: wiki/암기/voca 또는 wiki/암기/expression 파일의 양식을 점검하고 빈 섹션을 채운다. 기존 데이터는 절대 수정하지 않으며, 누락된 부분만 보완한다. 사용법 "/lint_wiki <디렉터리 또는 파일>" (예: /lint_wiki wiki/암기/voca, /lint_wiki wiki/암기/voca/袖.md).
+description: wiki/voca 또는 wiki/expression 파일의 양식을 점검하고 빈 섹션을 채운다. 기존 데이터는 절대 수정하지 않으며, 누락된 부분만 보완한다. 사용법 "/lint_wiki <디렉터리 또는 파일>" (예: /lint_wiki wiki/voca, /lint_wiki wiki/voca/袖.md).
 ---
 
 # lint_wiki — 위키 파일 양식 점검 및 보완
@@ -9,9 +9,9 @@ description: wiki/암기/voca 또는 wiki/암기/expression 파일의 양식을 
 
 - **디렉터리**가 오면 해당 디렉터리 안의 모든 `.md` 파일에 대해 린트를 수행한다.
 - **파일**이 오면 그 파일 하나만 린트한다.
-- 경로는 볼트 루트 기준 상대 경로로 해석한다. `wiki/암기/voca`, `wiki/암기/voca/袖.md`, `wiki/암기/expression` 등 모두 허용.
+- 경로는 볼트 루트 기준 상대 경로로 해석한다. `wiki/voca`, `wiki/voca/袖.md`, `wiki/expression` 등 모두 허용.
 
-전체 스키마·양식의 근거는 볼트 루트의 **CLAUDE.md**와 **`templates/voca.md`** · **`templates/expression.md`**다.
+전체 스키마·양식의 근거는 볼트 루트의 **AGENTS.md**와 **`templates/voca.md`** · **`templates/expression.md`**다.
 
 ---
 
@@ -27,8 +27,8 @@ description: wiki/암기/voca 또는 wiki/암기/expression 파일의 양식을 
 ## 파일 유형 판별
 
 파일이 **voca**인지 **expression**인지는 다음 순서로 판별한다:
-1. 경로에 `wiki/암기/voca/`가 포함되면 → **voca**
-2. 경로에 `wiki/암기/expression/`가 포함되면 → **expression**
+1. 경로에 `wiki/voca/`가 포함되면 → **voca**
+2. 경로에 `wiki/expression/`가 포함되면 → **expression**
 3. 프론트매터 `type: voca`가 있으면 → **voca**
 4. 판별 불가 시 → 해당 파일을 스킵하고 보고에 명시한다.
 
@@ -143,7 +143,7 @@ actions:
 
 **`## 포함 단어 풀이`**
 - 관용어 안에 JLPT N3 이상 난이도 단어가 있는데 섹션이 없거나 해당 단어가 누락되면 추가한다.
-- 해당 단어가 `wiki/암기/voca/`에 있으면 `[[링크]]`로 연결한다.
+- 해당 단어가 `wiki/voca/`에 있으면 `[[링크]]`로 연결한다.
 - 이미 작성된 항목은 수정하지 않는다.
 
 **Meta Bind 복습완료 버튼 블록**

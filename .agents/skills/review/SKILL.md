@@ -1,6 +1,6 @@
 ---
 name: review
-description: 일일 복습/테스트 루틴. wiki/암기/voca에서 N5를 제외하고 last_seen으로 가장 오래되거나 미복습(공백)인 단어 10개를 랜덤 추출해 train/review.md(오늘 오전 복습용)를 갱신하고, 직전 review.md의 10단어는 각 단어의 뜻·요미가나·한자를 읽어 train/test.md(오늘 저녁 테스트 퀴즈)로 렌더한다. 사용법 "/review". wiki 파일은 절대 수정하지 않는 읽기 전용 스킬.
+description: 일일 복습/테스트 루틴. wiki/voca에서 N5를 제외하고 last_seen으로 가장 오래되거나 미복습(공백)인 단어 10개를 랜덤 추출해 train/review.md(오늘 오전 복습용)를 갱신하고, 직전 review.md의 10단어는 각 단어의 뜻·요미가나·한자를 읽어 train/test.md(오늘 저녁 테스트 퀴즈)로 렌더한다. 사용법 "/review". wiki 파일은 절대 수정하지 않는 읽기 전용 스킬.
 ---
 
 # Review — 일일 복습/테스트 목록 생성
@@ -13,7 +13,7 @@ description: 일일 복습/테스트 루틴. wiki/암기/voca에서 N5를 제외
 
 즉 `train/review.md`는 "오늘 오전 복습 대상", `train/test.md`는 "오늘 저녁 테스트 대상(=어제 복습분)을 퀴즈로 렌더한 것"이다. 스킬을 한 번 발동하면 한 세대씩 밀린다. **`train.md` 중간 단계는 폐지됐다** — 예전엔 review.md를 train.md(링크 목록)로 이월했지만, 이제는 review.md를 곧바로 test.md 퀴즈로 렌더한다.
 
-전체 스키마·경로의 근거는 볼트 루트의 **CLAUDE.md**다. 충돌 시 CLAUDE.md를 우선한다.
+전체 스키마·경로의 근거는 볼트 루트의 **AGENTS.md**다. 충돌 시 AGENTS.md를 우선한다.
 
 ## 불변 규칙 (반드시 지킨다)
 
@@ -25,7 +25,7 @@ description: 일일 복습/테스트 루틴. wiki/암기/voca에서 N5를 제외
 
 ### 1. 세대 이월 = test.md 퀴즈 렌더 (직전 review.md → test.md)
 
-기존 `train/review.md`가 있으면 그 안의 10개 `[[표제어]]`를 읽어 **각 표제어의 `wiki/암기/voca/<표제어>.md`를 열고** 다음을 읽는다:
+기존 `train/review.md`가 있으면 그 안의 10개 `[[표제어]]`를 읽어 **각 표제어의 `wiki/voca/<표제어>.md`를 열고** 다음을 읽는다:
 - **표제어(한자)**: 파일명 = 표제어.
 - **요미가나**: `## 요미가나` 섹션 값(또는 프론트매터 `aliases`).
 - **뜻**: 본문 `**뜻**:` 줄. 프롬프트에는 **핵심 뜻만 간결히** 쓴다(부연 설명은 생략 가능).
@@ -93,7 +93,7 @@ description: 일일 복습/테스트 루틴. wiki/암기/voca에서 N5를 제외
 
 ### 2. 새 10개 추출
 
-`wiki/암기/voca/*.md`의 각 파일에서 `jlpt`·`last_seen` 값을 읽어 아래 알고리즘으로 10개(**N5 제외** 후 전체가 10개 미만이면 있는 만큼)를 뽑는다.
+`wiki/voca/*.md`의 각 파일에서 `jlpt`·`last_seen` 값을 읽어 아래 알고리즘으로 10개(**N5 제외** 후 전체가 10개 미만이면 있는 만큼)를 뽑는다.
 
 **추출 알고리즘 (오래된 풀에서 랜덤 샘플)**
 1. **`jlpt: N5`인 단어는 후보에서 제외한다** — 너무 쉬워 복습 우선순위에서 뺀다.
@@ -104,7 +104,7 @@ description: 일일 복습/테스트 루틴. wiki/암기/voca에서 N5를 제외
 
 아래 한 줄 파이프라인으로 처리한다(macOS BSD `sort` 기준, 볼트 루트에서 실행):
 ```bash
-for f in wiki/암기/voca/*.md; do
+for f in wiki/voca/*.md; do
   jlpt=$(awk -F': *' '/^jlpt:/{print $2; exit}' "$f")
   [ "$jlpt" = "N5" ] && continue
   v=$(awk -F': *' '/^last_seen:/{print $2; exit}' "$f")
@@ -118,7 +118,7 @@ done | sort | head -n 20 | sort -R | head -n 10 | cut -f2
 
 ### 3. review.md 갱신
 
-추출된 표제어로 `train/review.md`를 아래 형식으로 새로 쓴다(덮어쓰기). 날짜는 오늘 날짜. 각 표제어는 `wiki/암기/voca/<표제어>.md`를 가리키는 `[[표제어]]` 링크로만 나열한다(MOC 스타일, 뜻·예문은 넣지 않는다 — 각자 페이지에서 확인).
+추출된 표제어로 `train/review.md`를 아래 형식으로 새로 쓴다(덮어쓰기). 날짜는 오늘 날짜. 각 표제어는 `wiki/voca/<표제어>.md`를 가리키는 `[[표제어]]` 링크로만 나열한다(MOC 스타일, 뜻·예문은 넣지 않는다 — 각자 페이지에서 확인).
 
 ```markdown
 # 복습 — YYYY-MM-DD
